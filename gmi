@@ -14,9 +14,9 @@ exec_editor() { "${EDITOR:-nano}" "$1"; }
 __err() {
   local _type
   case $1 in
-    E) _type="!! "; shift ;;
-    M) _type=":: "; shift ;;
-    W) _type="-- "; shift
+    E) _type="!! "; shift ;; # error
+    M) _type=":: "; shift ;; # message
+    W) _type="-- "; shift    # warning
   esac
   >&2 echo -e "${_type}$1"
 }
@@ -46,6 +46,7 @@ read_param() {
 }
 
 get_src_dir() {
+  # return preformatted source directory
   local dir value
   dir="source_dir"
   value="$(read_param "$dir")" || { __err E "missing directory [$dir]."; return 1; }
@@ -61,7 +62,7 @@ new() {
   title="${1:-"Sans titre"}"
   entry_date="$(_time "%_d %B %Y")"
   echo "# $title" > "$tmpfile"
-  echo -e "\nLe$entry_date" >> "$tmpfile"
+  echo -e "\nLe $entry_date" >> "$tmpfile"
   local time1 time2
   time1="$(stat -c "%Y" "$tmpfile")"
   exec_editor "$tmpfile"
@@ -88,6 +89,7 @@ new() {
 }
 
 edit() {
+  # 
   local entry
   entry="$1"
   [[ $entry == "index" ]] && {
@@ -100,6 +102,12 @@ edit() {
     local src
     src="$(get_src_dir)"
     exec_editor "${src}micro.gmi" || return 1
+    return 0
+  }
+  [[ $entry == "archive" ]] && {
+    local src
+    src="$(get_src_dir)"
+    exec_editor "${src}archive/index.gmi" || return 1
     return 0
   }
   [[ -a "$f" ]] && {
@@ -116,6 +124,7 @@ edit() {
 }
 
 rss() {
+# generate rss feed.
 local header item footer
 header=$(cat << 'EOF'
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -296,45 +305,48 @@ deploy() {
 }
 
 list() {
-  local src f
+  local src entry
   src="$(get_src_dir)"  || return 1
-  f="$(
+  entry="$(
   (
       echo "new"
       echo "index"
       echo "micro"
+      echo "archive"
       echo "post"
       find "$src" -regextype posix-extended -regex "^.*/[0-9]+\.gmi$" | sort
       echo "deploy"
       echo "cancel"
   ) | fzf +s --tac --header "gmi version $__version")"
   echo 
-  case $f in
+  case $entry in
     new    ) new "$1"; return $? ;;
     index  ) edit index; return $? ;;
     micro  ) edit micro; return $? ;;
+    archive) edit archive; return $? ;;
     post   ) post; return $? ;;
     deploy ) deploy; return $? ;;
     cancel ) return 0
   esac
 
-  [[ $f ]] && {
+  [[ $entry ]] && {
     local title r
-    title="$(get_title "$f")"
-    __err M "${f#$src*}"
+    title="$(get_title "$entry")"
+    __err M "${entry#$src*}"
     __err M "$title"
     printf ":: [e]dit [r]ename [d]elete -> "
     read -r r
     case $r in
-      d) confirm && delete "$f" ;;
-      e) edit "$f" ;;
-      r) retitle "$f" ;;
+      d) confirm && delete "$entry" ;;
+      e) edit "$entry" ;;
+      r) retitle "$entry" ;;
       *) __err M "aborted."
     esac
   }
 }
 
 post() {
+  # add an entry to micro.gmi
   [[ $1 ]] ||  {
     local tmp
     local time1 time2
@@ -364,11 +376,12 @@ echo -e "It is distributed AS IS with NO WARRANTY.\n"
 
 for opt in "$@"; do
   case $opt in
-    index )  edit index; exit 0 ;;
-    micro )  edit micro; exit 0 ;;
-    new   )  shift; new "$1"; exit 0 ;;
-    deploy)  deploy; exit 0 ;;
-    post  )  shift; post "$1"; exit 0 ;;
+    index  ) edit index; exit 0 ;;
+    micro  ) edit micro; exit 0 ;;
+    archive) edit archive; exit 0 ;;
+    new    ) shift; new "$1"; exit 0 ;;
+    deploy ) deploy; exit 0 ;;
+    post   ) shift; post "$1"; exit 0 ;;
   esac
 done
 
