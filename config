@@ -1,0 +1,38 @@
+#                  _
+#   __ _ _ __ ___ (_)
+#  / _` | '_ ` _ \| | gemini
+# | (_| | | | | | | | capsule
+#  \__, |_| |_| |_|_| generator
+#  |___/
+#
+# CONFIGURATION FILE
+#
+
+source_dir = ~/.gmi/src
+backup_dir = ~/.gmi/bak
+
+# date format in articles.
+date_format_articles = %F
+
+# date format in microblog
+date_format_micro = %F %T
+
+# archive title
+archive_title = Archive
+
+# yearly archive title
+yearly_archive_title = %y Archive
+
+# auto archive frequency
+# min: 1 month
+# max: 6 months
+archive_frequency=6 months
+
+rss_title = 
+rss_description = 
+
+server_destination_dir = 
+ssh_identity_file = 
+ssh_port = 
+capsule_url = 
+

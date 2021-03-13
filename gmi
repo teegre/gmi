@@ -1,460 +1,59 @@
 #! /usr/bin/env bash
 
-#       CREATED: 2021/02/05
-# LAST MODIFIED: 2021/03/11
-__version="0.5"
+source core.sh
+source init.sh
+source new.sh
+source edit.sh
+source micro.sh
+source files.sh
+source deploy.sh
+source archive.sh
+source list.sh
 
-
-CONFIGFILE="$HOME/.config/gmi/config.conf"
-
-_time() ( printf "%($1)T\\n" "-1" )
-
-exec_editor() { "${EDITOR:-nano}" "$1"; }
-
-__err() {
-  local _type
-  case $1 in
-    E) _type="!! "; shift ;; # error
-    M) _type=":: "; shift ;; # message
-    W) _type="-- "; shift    # warning
-  esac
-  >&2 echo -e "${_type}$1"
-}
-
-read_param() {
-  # return a value from the config file
-  # for a given parameter.
-
-  local __p __l regex
-  __p="$1"
-  [[ $__p ]] || { echo "null"; return 1; }
-  regex="^[[:space:]]*${__p%=*}[[:space:]]*=([[:space:]]*)(.*)$"
-  while read -r __l; do
-    [[ $__l =~ ^#.*$ ]] && continue # ignore comments
-    if [[ $__l =~ $regex ]]; then
-      if [[ ! ${BASH_REMATCH[2]} ]]; then
-        echo "null"
-        return 1
-      else
-        echo "${BASH_REMATCH[2]//\~/$HOME}"
-        return 0
-      fi
-    fi
-  done < "$CONFIGFILE"
-  echo "null"
-  return 1
-}
-
-get_src_dir() {
-  # return preformatted source directory
-  local dir value
-  dir="source_dir"
-  value="$(read_param "$dir")" || { __err E "missing directory [$dir]."; return 1; }
-  [[ $value =~ .*/$ ]] || value+="/"
-  echo "$value"
-}
-
-new() {
-  # create a new article and
-  # add it to index.gmi
-  local tmpfile title entry_date
-  tmpfile="$(mktemp)"
-  title="${1:-"Sans titre"}"
-  entry_date="$(_time "%_d %B %Y")"
-  echo "# $title" > "$tmpfile"
-  echo -e "\nLe $entry_date" >> "$tmpfile"
-  local time1 time2
-  time1="$(stat -c "%Y" "$tmpfile")"
-  exec_editor "$tmpfile"
-  time2="$(stat -c "%Y" "$tmpfile")"
-  [[ $time1 == "$time2" ]] && {
-    rm "$tmpfile"
-    __err W "no change: file removed."
-    return 1
-  }
-  title="$(get_title "$tmpfile")"
-  local src d m y path index entry
-  src="$(get_src_dir)" || return 1
-  d="$(_time "%d")"
-  m="$(_time "%m")"
-  y="$(_time "%Y")"
-  path="$y/$m/$d/"
-  index=1
-  [[ -d "${src}${path}" ]] || mkdir -p "${src}${path}"
-  while [[ -a "${src}${path}${index}.gmi" ]]; do ((index++)); done
-  entry="${src}${path}${index}.gmi"
-  mv "$tmpfile" "$entry"
-  __err M "saved entry: ${entry}."
-  echo "=> ${path}${index}.gmi $y/$m/$d $title" >> "${src}index.gmi"
-}
-
-edit() {
-  # 
-  local entry
-  entry="$1"
-  [[ $entry == "index" ]] && {
-    local src
-    src="$(get_src_dir)"
-    exec_editor "${src}index.gmi" || return 1
-    return 0
-  }
-  [[ $entry == "micro" ]] && {
-    local src
-    src="$(get_src_dir)"
-    exec_editor "${src}micro.gmi" || return 1
-    return 0
-  }
-  [[ $entry == "archive" ]] && {
-    local src
-    src="$(get_src_dir)"
-    exec_editor "${src}archive/index.gmi" || return 1
-    return 0
-  }
-  [[ -a "$entry" ]] && {
-    local title1 title2
-    title1="$(get_title "$entry")"
-    exec_editor "$entry" || return 1
-    title2="$(get_title "$entry")"
-    [[ $title2 != "$title1" ]] &&
-      retitle_in "$entry" "$title2" || return 1
-    return 0
-  }
-  __err E "$entry: no such file."
-  return 1
-}
-
-rss() {
-# generate rss feed.
-local header item footer
-header=$(cat << 'EOF'
-<?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
-<channel>
-<title>[TITLE]</title>
-<description>
-[DESCRIPTION]
-</description>
-<link>[URL]</link>
-<lastBuildDate>[DATE]</lastBuildDate>
-EOF
-)
-item=$(cat << 'EOF'
-<item>
-<link>[URL]</link>
-<pubDate>[DATE]</pubDate>
-<title>[ITEMTITLE]</title>
-<description>
-[ITEMDESCRIPTION]
-</description>
-</item>
-EOF
-)
-footer=$(cat << 'EOF'
-</channel>
-</rss>
-EOF
-)
-
-  __err M "generating rss..."
-
-  local title desc url
-  title="$(read_param "rss_title")" || {
-    __err E "config: rss_title missing."
-    return 1
-  }
-  desc="$(read_param "rss_description")" || {
-    __err E "config: rss_description missing."
-    return 1
-  }
-  url="$(read_param "capsule_url")" || {
-    __err E "config: capsule_url missing."
-    return 1
-  }
-
-  local src index rssfile
-  src="$(get_src_dir)" || return 1
-  index="${src}index.gmi"
-  [[ -s "$index" ]] || { __err E "index.gmi: no such file."; return 1; }
-  rssfile="${src}feed/rss.xml"
-  [[ -d "${src}feed" ]] || mkdir "${src}feed" || return 1
-  
-  local now
-  now="$(_time "%F %T %Z")"
-  header="${header/\[TITLE\]/$title}"
-  header="${header/\[DATE\]/$now}"
-  header="${header/\[URL\]/$url}"
-  header="${header/\[DESCRIPTION\]/$desc}"
-
-  echo "$header" > "$rssfile"
-
-  local l newitem itemurl itemdate itemtitle
-  while read -r l; do
-    [[ $l =~ ^=\>\ (.+)\ ([0-9]{4}/[0-9]{2}/[0-9]{2})\ (.+)$ ]] && {
-      newitem="$item"
-      itemurl="$url/${BASH_REMATCH[1]}"
-      itemdate="${BASH_REMATCH[2]}"
-      itemtitle="${BASH_REMATCH[3]}"
-      newitem="${newitem/\[URL\]/$itemurl}"
-      newitem="${newitem/\[DATE\]/$itemdate}"
-      newitem="${newitem/\[ITEMTITLE\]/$itemtitle}"
-      newitem="${newitem/\[ITEMDESCRIPTION\]/$itemtitle}"
-      echo "$newitem" >> "$rssfile"
-    }
-  done < <(tac "$index")
-
-  echo "$footer" >> "$rssfile"
-
-  __err M "rss generated."
-
-}
-
-get_title() {
-  local entry="$1"
-  [[ -s "$entry" ]] && {
-    # shellcheck disable=SC2016
-    sed -r 's_^# (.+)$_\1_;1q' "$entry" 2> /dev/null || return 1
-    return 0
-  }
-  return 1
-}
-
-retitle() {
-  # rename an article via user input.
-  local entry name T t
-  entry="$1"
-  name="${entry##*/}"
-  T="$(get_title "$entry")"
-  read -i "$T" -p ":: $name: enter new title -> " -re t
-  [[ $t ]] || return 1
-  [[ $t == "$T" ]] && return 1
-  retitle_in -f "$entry" "$t"
-}
-
-
-retitle_in() {
-  # change title of an article.
-  local src name entry newtitle force indexgmi
-  src="$(get_src_dir)" || return 1
-  [[ $1 == "-f" ]] && { force=1; shift; }
-  entry="$1"
-  newtitle="$2"
-  name="${entry/$src/}"
-  pdate="${name%/*.gmi}"
-  name="${name%*.gmi}"
-  [[ -a "$entry" ]] || { __err E "$name.gmi: no such file."; return 1; }
-  [[ $force ]] && {
-    sed -i "s_^# .*\$_# ${newtitle}_" "$entry"
-    __err M "article $name renamed."
-  }
-  indexgmi="${src}index.gmi"
-  [[ -a "$indexgmi" ]] || { __err E "index.gmi: no such file."; return 1; }
-  sed -i "s_=> ${entry/$src/} ${pdate}.*_=> ${entry/$src} ${pdate} ${newtitle}_" "$indexgmi"
-  __err M "article $name renamed in index.gmi."
-}
-
-delete_empty_dir() {
-  local src dir
-  src="$(get_src_dir)" || return 1
-  dir="$1"
-  [[ -a $(find "$dir" -prune -type d -empty) ]] && {
-    __err W "$dir appears to be empty."
-    __err W "deleting..."
-    rm -rf "$dir" && {
-      [[ $dir != "$src" ]] &&
-        delete_empty_dir "${dir%/*}"
-    }
-    return 0
-  }
-  return 1
-}
-
-delete() {
-  local src entry name dir title indexgmi
-  src="$(get_src_dir)" || return 1
-  entry="$1"
-  name="${entry/$src}"
-  dir="${entry%/*}"
-  title="$(get_title "$entry")"
-  [[ -a "$entry" ]] || { __err E "$name.gmi: no such file."; return 1; }
-  indexgmi="${src}index.gmi"
-  rm "$dir"/*
-  __err M "$name deleted."
-  sed -i "/^=> .*${title}.*$/d" "$indexgmi"
-  __err M "$name removed from index.gmi."
-  delete_empty_dir "$dir"
-  return 0
-}
-
-confirm() {
-  local r
-  printf ":: sure? [y/N] -> "
-  read -r r
-  [[ ${r,,} == "y" ]] && return 0
-  return 1
-}
-
-archive() {
-  local src entry name dir title r yy mm dd ff path relpath a_index y_index 
-  src="$(get_src_dir)" || return 1
-  entry="$1"
-  name="${entry/$src}"
-  title="$(get_title "$entry")"
-  dir="${entry%/*}"
-  src+="archive/"
-  a_index="${src}index.gmi"
-  r="^([0-9]{4})/([0-9]{2})/([0-9]{2})/(.+\.gmi)$"
-  [[ $name =~ $r ]] && {
-    __err M "archive $name"
-    yy="${BASH_REMATCH[1]}"
-    mm="${BASH_REMATCH[2]}"
-    dd="${BASH_REMATCH[3]}"
-    ff="${BASH_REMATCH[4]}"
-    path="${src}$yy/$mm/$dd/"
-    relpath="$mm/$dd/"
-    y_index="${src}$yy/index.gmi"
-    [[ -d "${src}$yy" ]] || {
-      [[ -a "$a_index" ]] ||
-        echo -e "# Archives\n" > "$a_index"
-      echo "=> ${yy}/index.gmi [$yy]" >> "$a_index"
-    }
-    [[ -d "$path" ]] || mkdir -p "$path"
-    [[ -a "$y_index" ]] ||
-      echo -e "# Articles de $yy archivés\n" > "$y_index"
-    cp "$dir"/* "${path}" &> /dev/null || return 1
-    echo "=> ${relpath}$ff $yy/$mm/$dd $title" >> "$y_index"
-    delete "$entry"
-    __err M "$name archived."
-    return 0
-  }
-  __err E "archive: could not proceed."
-  return 1
-}
-
-auto_archive() {
-  local src y f path
-  src="$(get_src_dir)" || return 1
-  y="$(_time "%Y")"
-  while read -r f; do
-    [[ $f =~ ^${src}([0-9]{4}).+$ ]] && {
-      [[ ${BASH_REMATCH[1]} -eq "$y" ]] && continue
-      archive "$f"
-    }
-  done < <(find "$src" -regex "${src}[0-9]+/[0-9]+/[0-9]+/[0-9]+\.gmi" | sort)
-}
-
-deploy() {
-  local err src dst ssh_cmd ssh_id_file ssh_port
-  src="$(get_src_dir)" || err=1;
-  dst="$(read_param "server_destination_dir")" || { __err E "config: missing destination directory."; err=1; }
-  [[ $err ]] && return 1
-  [[ $dst =~ .*/$ ]] || dst+="/"
-  [[ -d "$src" ]] || { __err E "$src; no such directory."; return 1; }
-  ssh_port="$(read_param "ssh_port")" || unset ssh_port
-  ssh_id_file="$(read_param "ssh_identity_file")" || unset ssh_id_file
-  ssh_cmd="ssh"
-  [[ $ssh_port ]] && ssh_cmd+=" -p $ssh_port"
-  [[ $ssh_id_file ]] && ssh_cmd+=" -i $ssh_id_file"
-  rss
-  __err M "$src -> $dst"
-  rsync -hruv --delete -e "$ssh_cmd" --rsync-path="sudo rsync" "$src" "$dst" || return 1
-  __err M "deployed."
-}
-
-list() {
-  local src entry
-  src="$(get_src_dir)"  || return 1
-  entry="$(
-  (
-      echo "new"
-      echo "post"
-      echo "deploy"
-      find "$src" -not \( -path "${src}"archive -prune \) -regex '^.+/[0-9]+\.gmi$'| sort
-      echo "index"
-      echo "micro"
-      echo "archive index"
-      echo "archived"
-      echo "auto archive"
-      echo "cancel"
-  ) | fzf +s --tac --header "gmi version $__version")"
-  echo 
-  case $entry in
-    new            ) new "$1"; return $? ;;
-    post           ) post; return $? ;;
-    deploy         ) deploy; return $? ;;
-    index          ) edit index; return $? ;;
-    micro          ) edit micro; return $? ;;
-    "archive index") edit archive; return $? ;;
-    archived       ) list_archived; return $? ;;
-    "auto archive" ) confirm && auto_archive; return $? ;;
-    cancel         ) return 0
-  esac
-
-  [[ $entry ]] && {
-    local title r
-    title="$(get_title "$entry")"
-    __err M "${entry#$src*}"
-    __err M "$title"
-    printf ":: [e]dit [r]ename [a]rchive [d]elete -> "
-    read -r r
-    case $r in
-      a) confirm && archive "$entry" ;;
-      d) confirm && delete "$entry" ;;
-      e) edit "$entry" ;;
-      r) retitle "$entry" ;;
-      *) list
-    esac
-  }
-}
-
-list_archived() {
-  local src entry
-  src="$(get_src_dir)" || return 1
-  entry="$(
-  (
-    find "${src}archive/" -regex '^.+/[0-9]+\.gmi$' | sort
-    echo "cancel"
-  ) | fzf +s --tac --header "gmi version $__version")"
-  echo
-  [[ $entry == cancel ]] && return 0
-  edit "$entry"
-}
-
-post() {
-  # add an entry to micro.gmi
-  [[ $1 ]] ||  {
-    local tmp
-    local time1 time2
-    tmp="$(mktemp)"
-    time1="$(stat -c "%Y" "$tmp")"
-    exec_editor "$tmp"
-    time2="$(stat -c "%Y" "$tmp")"
-    [[ $time1 == "$time2" ]] && {
-      rm "$tmp"
-      __err W "cancelled."
-      return 1
-    }
-  }
-  local now
-  now="$(_time "%Y/%m/%d %H:%M")"
-  local msg="${1:-"$(<"$tmp")"}"
-  local src
-  src="$(get_src_dir)"
-  echo -e "## $now\n$msg\n" >> "${src}micro.gmi"
-  [[ -a $tmp ]] && rm "$tmp"
-  deploy
-}
-
+echo '                 _'
+echo '  __ _ _ __ ___ (_)'
+echo " / _\` | '_ \` _ \| | gemini"
+echo '| (_| | | | | | | | capsule'
+echo ' \__, |_| |_| |_|_| generator'
+echo ' |___/'
+echo
 echo "gmi -- version $__version"
 echo "This program is free software."
 echo -e "It is distributed AS IS with NO WARRANTY.\n"
 
-case $1 in
-  index  ) edit index; exit 0 ;;
-  micro  ) edit micro; exit 0 ;;
-  archive) edit archive; exit 0 ;;
-  new    ) shift; new "$1"; exit 0 ;;
-  deploy ) deploy; exit 0 ;;
-  post   ) shift; post "$1"; exit 0 ;;
-esac
+entry="$1"
 
-list "$@"
+while :; do
+  [[ $entry ]] || entry="$(list)"
+
+  case $entry in
+    init     ) init; break ;;
+    new      ) shift; new "$1"; break ;;
+    post     ) shift; post "$1"; break ;;
+    index    ) edit_index index; break ;;
+    micro    ) edit_index micro; break ;;
+    archindex) edit_index archive ;;
+    archived ) list_archived; break ;;
+    "auto archive") confirm && auto_archive; break ;;
+    deploy   ) deploy; break ;;
+    quit     ) break
+  esac
+
+  echo "$entry"
+
+  [[ $entry ]] && {
+    title="$(get_title "$entry")"
+    __err M "${entry#$src*}"
+    __err M "$title"
+    printf ":: [e]dit [r]ename [a]rchive [d]elete: "
+    read -r r
+    case $r in
+      a) confirm "archive?" && archive "$entry" ;;
+      d) confirm "delete?" && delete "$entry" ;;
+      e) edit "$entry" ;;
+      r) retitle_usr "$entry" ;;
+      *) list
+    esac
+  }
+  unset entry title r
+done
