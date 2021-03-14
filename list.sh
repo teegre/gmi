@@ -45,8 +45,11 @@ list_archived() {
 
   entry="$(
   (
-      find "${src}archive/" -regex '[0-9]+.+index\.gmi$' | sort
+      find "${src}archive/" -regex '^.+/[0-9]+.+/index\.gmi$' | sort
       echo "quit"
   ) | fzf +s --tac --header "gmi version $__version")"
-  echo "$entry"
+  [[ $entry ]] && {
+    source edit.sh
+    edit "$entry"
+  }
 }
