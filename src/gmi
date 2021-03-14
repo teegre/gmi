@@ -1,0 +1,58 @@
+#! /usr/bin/env bash
+
+source /usr/lib/gmi/core.sh
+source /usr/lib/gmi/init.sh
+source /usr/lib/gmi/new.sh
+source /usr/lib/gmi/edit.sh
+source /usr/lib/gmi/micro.sh
+source /usr/lib/gmi/files.sh
+source /usr/lib/gmi/deploy.sh
+source /usr/lib/gmi/archive.sh
+source /usr/lib/gmi/list.sh
+
+echo '                 _'
+echo '  __ _ _ __ ___ (_)'
+echo " / _\` | '_ \` _ \| | gemini"
+echo '| (_| | | | | | | | capsule'
+echo ' \__, |_| |_| |_|_| generator'
+echo ' |___/'
+echo
+echo "gmi -- version $__version"
+echo "This program is free software."
+echo -e "It is distributed AS IS with NO WARRANTY.\n"
+
+entry="$1"
+
+while :; do
+  [[ $entry ]] || entry="$(list)"
+
+  case $entry in
+    init     ) init; break ;;
+    new      ) shift; new "$1"; break ;;
+    post     ) shift; post "$1"; break ;;
+    index    ) edit_index index; break ;;
+    micro    ) edit_index micro; break ;;
+    archived ) list_archived; break ;;
+    deploy   ) deploy; break ;;
+    quit     ) break ;;
+    deploy-micro ) deploy micro; break ;;
+    archive-index) edit_index archive ;;
+    auto-archive ) confirm && auto_archive; break ;;
+  esac
+
+  [[ -a $entry ]] && {
+    title="$(get_title "$entry")"
+    __err M "${entry#$src*}"
+    __err M "$title"
+    printf ":: [e]dit [r]ename [a]rchive [d]elete: "
+    read -r r
+    case $r in
+      a) confirm "archive?" && archive "$entry"; break ;;
+      d) confirm "delete?" && delete "$entry"; break ;;
+      e) edit "$entry"; break ;;
+      r) retitle_usr "$entry"; break ;;
+    esac
+  }
+  __err E "invalid option '$entry'"
+  unset entry title r
+done
