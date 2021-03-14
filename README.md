@@ -56,7 +56,7 @@ Title of main archive index file.
 Title of yearly archive index file (%y expands to year).
 
 `rss_title =`  
-`rss_description =`  
+`rss_description =`
 
 `server_destination_dir =`  
 For instance `user@domain:/path`.
@@ -67,7 +67,7 @@ Optional.
 `ssh_port =`  
 Optional.
 
-`capsule_url =` 
+`capsule_url =`
 
 Once everything is setup:
 
@@ -84,13 +84,12 @@ Once everything is setup:
 ```
 ## Options
 
-Invoked without argument, **gmi** display a list of commands and articles:
+Invoked without argument, **gmi** display a list of commands:
 
 ```
 | new
 | post
-| /home/teegre/.gmi/src/2021/02/07/1/index.gmi
-| /home/teegre/.gmi/src/2021/03/06/1/index.gmi
+| articles
 | index
 | micro
 | archive-index
@@ -98,7 +97,7 @@ Invoked without argument, **gmi** display a list of commands and articles:
 | auto-archive
 > quit
   gmi version 0.6
-  11/11
+  9/9
 >
 ```
 Commands can also be invoked directly from the command line.
@@ -108,9 +107,18 @@ Commands can also be invoked directly from the command line.
 | init    | Create initial capsule directory structure and files. |
 | new [title] | Create a new article. |
 | post [msg]  | Post a new microblog entry. |
+| articles | Display article list. |
 | index | Open main index for editing. |
 | micro | Open micro.gmi for editing. |
 | archive-index | Open main archive index. |
-| archived | Display archived articles list. |
+| archived | Display archived article list. |
 | auto-archive | Proceed archiving of older articles. |
 
+When an article is selected, more options are shown:
+
+| Command | Description |
+|:--------|:------------|
+| edit    | Open article for editing. |
+| rename  | Rename the article. |
+| archive | Archive the article. |
+| delete  | Delete the article. |
