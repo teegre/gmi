@@ -30,6 +30,7 @@ while :; do
     init     ) init; break ;;
     new      ) shift; new "$1"; break ;;
     post     ) shift; post "$1"; break ;;
+    articles ) entry="$(article_list)";;
     index    ) edit_index index; break ;;
     micro    ) edit_index micro; break ;;
     archived ) list_archived; break ;;
@@ -53,6 +54,8 @@ while :; do
       r) retitle_usr "$entry"; break ;;
     esac
   }
+
+  [[ $entry == "quit" ]] && break
   __err E "invalid option '$entry'"
   unset entry title r
 done
