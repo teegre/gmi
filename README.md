@@ -13,7 +13,7 @@
 
 This is work in progress.
 
-*gmi* has been tested on a self-hosted server only.
+**gmi** has been tested on a **self-hosted server only**.
 
 ## Dependencies
 
@@ -69,19 +69,59 @@ Optional.
 
 `capsule_url =`
 
-Once everything is setup:
+Once everything is set up, enter: `gmi init`  
+It creates the main directory structure and files for the capsule.
+
+**For convenience, you can disable password authentication for rsync on the server. To do so:**
+
+On the server, enter: `sudo visudo`  
+And add this line: `user ALL= NOPASSWD:/usr/bin/rsync`
+
+Then, you're good to go.
+
+## Basic usage
+
+**To customize your main page, enter:** `gmi index`
+
+**To create an article, enter:** `gmi new "My New Article"`  
+When finished, a link to the article is added to the main index.gmi.
+
+**To deploy the capsule on the server:** `gmi deploy`  
+RSS feed is generated each time you use this command.
+
+**To add a microblog entry, enter:** `gmi post "Hello, World!"`  
+Changes are automatically deployed to the server.
+
+**To view list of already created articles:** `gmi articles`  
+Selected article then can be:
+
+* Edited
+* Renamed
+* Archived
+* Deleted
+
+## Directory structure and files
+
+Articles are stored in a YYYY/MM/DD/ID/ fashion.
+
+## Article title and renaming
+
+**gmi** assumes the first line of the file is the article's title.
 
 ```
-> gmi init
-:: init: found source directory
-:: init: found backup directory
-:: init: creating directories...
-:: init: creating files...
-:: init: index.gmi [ok]
-:: init: archive/index.gmi [ok]
-:: init: micro.gmi [ok]
-:: init: done.
+1 | # My New Article Title
+2 |
+3 | 2021/03/15
+4 |
+5 | Article content
 ```
+
+**When the title is changed inside the file, it is also changed in the main page.**
+
+```
+=> 2021/03/15/1/index.gmi 2021/03/15 My New Article Title
+```
+
 ## Options
 
 Invoked without argument, **gmi** display a list of commands:
@@ -122,3 +162,4 @@ When an article is selected, more options are shown:
 | rename  | Rename the article. |
 | archive | Archive the article. |
 | delete  | Delete the article. |
+
