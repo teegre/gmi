@@ -24,7 +24,7 @@
 #
 # GMI
 # C : 2021/02/07
-# M : 2021/03/14
+# M : 2021/03/15
 # D : Main program.
 
 source /usr/lib/gmi/core.sh
@@ -36,6 +36,7 @@ source /usr/lib/gmi/files.sh
 source /usr/lib/gmi/deploy.sh
 source /usr/lib/gmi/archive.sh
 source /usr/lib/gmi/list.sh
+source /usr/lib/gmi/help.sh
 
 echo '                 _'
 echo '  __ _ _ __ ___ (_)'
@@ -62,9 +63,10 @@ while :; do
     micro    ) edit_index micro; break ;;
     archived ) list_archived; break ;;
     deploy   ) deploy; break ;;
+    help     ) help; break ;;
     quit     ) break ;;
     deploy-micro ) deploy micro; break ;;
-    archive-index) edit_index archive ;;
+    archive-index) edit_index archive; break ;;
     auto-archive ) confirm && auto_archive; break ;;
   esac
 
@@ -79,6 +81,7 @@ while :; do
       d) confirm "delete?" && delete "$entry"; break ;;
       e) edit "$entry"; break ;;
       r) retitle_usr "$entry"; break ;;
+      *) __err M "cancelled."; break ;;
     esac
   }
 
