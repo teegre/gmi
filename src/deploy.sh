@@ -26,7 +26,7 @@
 #
 # DEPLOY
 # C: 2021/03/13
-# M: 2021/03/13
+# M: 2021/03/15
 # D: For deploying a capsule on the server.
 
 source /usr/lib/gmi/core.sh
@@ -67,7 +67,7 @@ deploy() {
 
   [[ $1 == "micro" ]]  && {
     __err M "micro: posting microblog entry."
-    rsync -hruv --delete -e "$ssh_cmd" --rsync-path="sudo rsync" "${src}micro.gmi" "$dst" || {
+    rsync -a -e "$ssh_cmd" --rsync-path="sudo rsync" "${src}micro.gmi" "$dst" || {
       __err E "micro: an error occured."
       return 1
     }
