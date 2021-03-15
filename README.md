@@ -21,11 +21,7 @@ bash, coreutils, findutils, fzf, nano (optional), rsync, sed, ssh
 
 ## Installation
 
-Clone this repository :
-
-`git clone https://gitlab.com/teegre/gmi.git`
-
-then
+Clone this repository and:
 
 `make install`
 
@@ -37,13 +33,11 @@ then
 
 First, you need to copy the configuration file `/etc/gmi/config` in `$HOME/.config/gmi` and edit it.
 
-
 `source_dir = ~/.gmi/src`  
 Capsule source directory. Defaults to ~/.gmi/src.
 
 `backup_dir = ~/.gmi/bak`  
 Backup directory.
-
 
 `date_format_articles = %F`  
 `date_format_micro = %F %T`  
@@ -75,7 +69,8 @@ It creates the main directory structure and files for the capsule.
 **For convenience, you can disable password authentication for rsync on the server. To do so:**
 
 On the server, enter: `sudo visudo`  
-And add this line: `user ALL= NOPASSWD:/usr/bin/rsync`
+And add this line: `user ALL= NOPASSWD:/usr/bin/rsync`  
+(Replace "user" by your username)
 
 Then, you're good to go.
 
@@ -140,6 +135,9 @@ Invoked without argument, **gmi** display a list of commands:
   9/9
 >
 ```
+
+Selected a command and press <kbd>enter</kbd>.
+
 Commands can also be invoked directly from the command line.
 
 | Command | Description |
