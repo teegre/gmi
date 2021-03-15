@@ -136,7 +136,7 @@ Invoked without argument, **gmi** display a list of commands:
 >
 ```
 
-Selected a command and press <kbd>enter</kbd>.
+Select a command with arrow keys or type it and then press <kbd>enter</kbd>.
 
 Commands can also be invoked directly from the command line.
 
