@@ -24,7 +24,7 @@
 #
 # GMI
 # C : 2021/02/07
-# M : 2021/03/15
+# M : 2021/03/16
 # D : Main program.
 
 source /usr/lib/gmi/core.sh
@@ -49,43 +49,38 @@ echo "gmi -- version $__version"
 echo "This program is free software."
 echo -e "It is distributed AS IS with NO WARRANTY.\n"
 
-entry="$1"
+[[ $1 ]] || {
+  __err M "type 'gmi help' for more info."
+  exit
+}
 
-while :; do
-  [[ $entry ]] || entry="$(list)"
+case $1 in
+  init         ) init ;;
+  new          ) shift; new "$*" ;;
+  post         ) shift; post "$*" ;;
+  articles     ) entry="$(article_list)" ;;
+  index        ) edit_index index ;;
+  micro        ) edit_index micro ;;
+  archived     ) list_archived ;;
+  deploy       ) deploy ;;
+  help         ) help ;;
+  deploy-micro ) deploy micro ;;
+  archive-index) edit_index archive ;;
+  auto-archive ) confirm && auto_archive ;;
+  *            ) __err E "invalid option '$1'"
+esac
 
-  case $entry in
-    init     ) init; break ;;
-    new      ) shift; new "$1"; break ;;
-    post     ) shift; post "$1"; break ;;
-    articles ) entry="$(article_list)";;
-    index    ) edit_index index; break ;;
-    micro    ) edit_index micro; break ;;
-    archived ) list_archived; break ;;
-    deploy   ) deploy; break ;;
-    help     ) help; break ;;
-    quit     ) break ;;
-    deploy-micro ) deploy micro; break ;;
-    archive-index) edit_index archive; break ;;
-    auto-archive ) confirm && auto_archive; break ;;
+[[ -a $entry ]] && {
+  title="$(get_title "$entry")"
+  __err M "${entry#$src*}"
+  __err M "$title"
+  printf ":: [e]dit [r]ename [a]rchive [d]elete: "
+  read -r r
+  case $r in
+    a) confirm "archive?" && archive "$entry" ;;
+    d) confirm "delete?" && delete "$entry" ;;
+    e) edit "$entry" ;;
+    r) retitle_usr "$entry" ;;
+    *) __err M "cancelled." ;;
   esac
-
-  [[ -a $entry ]] && {
-    title="$(get_title "$entry")"
-    __err M "${entry#$src*}"
-    __err M "$title"
-    printf ":: [e]dit [r]ename [a]rchive [d]elete: "
-    read -r r
-    case $r in
-      a) confirm "archive?" && archive "$entry"; break ;;
-      d) confirm "delete?" && delete "$entry"; break ;;
-      e) edit "$entry"; break ;;
-      r) retitle_usr "$entry"; break ;;
-      *) __err M "cancelled."; break ;;
-    esac
-  }
-
-  [[ $entry == "quit" ]] && break
-  __err E "invalid option '$entry'"
-  unset entry title r
-done
+}
