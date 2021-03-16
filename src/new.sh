@@ -33,7 +33,11 @@ source /usr/lib/gmi/core.sh
 insert_entry() {
   # insert article link in main index.gmi file.
 
-  sed -i '/---/ i '"$1"'' "${src}index.gmi"
+  local delim 
+  delim="$(read_param "articles_section_delimiter")" ||
+    delim="---"
+
+  sed -i '/'"$delim"'/ i '"$1"'' "${src}index.gmi"
 }
 
 new() {
