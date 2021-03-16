@@ -26,51 +26,28 @@
 #
 # LIST
 # C: 2021/03/13
-# M: 2021/03/14
+# M: 2021/03/16
 # D: Display a list menu.
 
 source /usr/lib/gmi/core.sh
 
 article_list() {
-  local entry title article
+  local entry title article adate
   declare -A alist
   while read -r entry; do
     title="$(get_title "$entry")"
-    alist["$title"]="$entry"
+    [[ $entry =~ ^.+/([0-9]{4}/[0-9]{2}/[0-9]{2})/.+$ ]] &&
+      adate="${BASH_REMATCH[1]}"
+    alist["$adate $title"]="$entry"
   done < <(find "$src" -not \( -path "${src}"archive -prune \) -regex '^.+/[0-9]+.+/index\.gmi$' | sort)
   article="$(
   (
     for entry in "${!alist[@]}"; do
       echo "$entry"
     done
-    echo quit
   ) | fzf +s --tac --header "gmi version $__version")"
-  [[ $article == "quit" ]] && { echo "quit"; return 0; }
+  [[ $article ]] || { __err M "cancelled."; return 0; }
   echo "${alist["$article"]}"
-}
-
-list() {
-  # list options and articles.
-
-  [[ $src ]] || return 1
-
-  local entry
-
-  entry="$(
-  (
-      echo "new"
-      echo "post"
-      echo "deploy"
-      echo "articles"
-      echo "index"
-      echo "micro"
-      echo "archive-index"
-      echo "archived"
-      echo "auto-archive"
-      echo "quit"
-  ) | fzf +s --tac --header "gmi version $__version")"
-  
-  echo "$entry"
 }
 
 list_archived() {
