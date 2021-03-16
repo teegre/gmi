@@ -26,7 +26,7 @@
 #
 # DEPLOY
 # C: 2021/03/13
-# M: 2021/03/15
+# M: 2021/03/16
 # D: For deploying a capsule on the server.
 
 source /usr/lib/gmi/core.sh
@@ -58,8 +58,8 @@ deploy() {
   [[ $1 ]] || {
     rss
     __err M "$src -> $dst"
-    rsync -hruv --delete -e "$ssh_cmd" --rsync-path="sudo rsync" "$src" "$dst" || {
-      __err E "micro: an error occured."
+    rsync -ru --delete -e "$ssh_cmd" --rsync-path="sudo rsync" "$src" "$dst" || {
+      __err E "deploy: an error occured."
       return 1
     }
     __err M "deployed."
