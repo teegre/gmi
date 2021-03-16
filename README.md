@@ -43,6 +43,9 @@ Backup directory.
 `date_format_micro = %F %T`  
 Articles and microblog date format (see `man date` for more on this).
 
+`articles_section_name = Articles`  
+`articles_section_delimiter = ---`  
+
 `archive_title = Archive`  
 Title of main archive index file.
 
@@ -119,29 +122,8 @@ Articles are stored in a YYYY/MM/DD/ID/ fashion.
 
 ## Options
 
-Invoked without argument, **gmi** display a list of commands:
-
-```
-| new
-| post
-| articles
-| index
-| micro
-| archive-index
-| archived
-| auto-archive
-> quit
-  gmi version 0.6
-  9/9
->
-```
-
-Select a command with arrow keys or type it and then press <kbd>enter</kbd>.
-
-Commands can also be invoked directly from the command line.
-
-| Command | Description |
-|:--------|:------------|
+| Option | Description |
+|:-------|:------------|
 | init    | Create initial capsule directory structure and files. |
 | new [title] | Create a new article. |
 | post [msg]  | Post a new microblog entry. |
@@ -154,8 +136,8 @@ Commands can also be invoked directly from the command line.
 
 When an article is selected, more options are shown:
 
-| Command | Description |
-|:--------|:------------|
+| Option | Description |
+|:-------|:------------|
 | edit    | Open article for editing. |
 | rename  | Rename the article. |
 | archive | Archive the article. |
