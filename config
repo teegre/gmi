@@ -17,6 +17,12 @@ date_format_articles = %F
 # date format in microblog
 date_format_micro = %F %T
 
+# articles section name
+articles_section_name = Articles
+
+# article section delimiter
+articles_section_delimiter = ---
+
 # archive title
 archive_title = Archive
 
