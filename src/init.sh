@@ -26,8 +26,8 @@
 #
 # INIT
 # C: 2021/03/13
-# M: 2021/03/13
-# D: Create initial capsule directory structure.
+# M: 2021/03/16
+# D: Create initial capsule directory structure and files.
 
 source /usr/lib/gmi/core.sh
 
@@ -46,6 +46,11 @@ init() {
   [[ -d "$bak" ]] || mkdir -p "$bak"
 
   [[ -d "$src" ]] || {
+    local a_name a_delimiter
+    a_name="$(read_param "articles_section_name")" ||
+      a_name="Articles"
+    a_delimiter="$(read_param "articles_section_delimiter")" ||
+      a_delimiter="---"
     __err M "init: creating directories..."
     [[  -d "${src}archive" ]] ||
       mkdir -p "${src}archive"
@@ -53,11 +58,11 @@ init() {
     touch "${src}index.gmi" && {
       {
         echo -e "# Gemini Capsule\n"
-        echo -e "Made with Gmi, the Gemini Capsule Generator.\n"
         echo -e "=> feed/rss.xml RSS\n"
         echo -e "=> micro.gmi Microblog\n"
         echo -e "=> archive/index.gmi Archive\n"
-        echo -e "# Articles\n"
+        echo -e "# $a_name\n"
+        echo -e "$a_delimiter\n"
       } >> "${src}index.gmi"
       __err M "init: index.gmi [ok]"
     }
