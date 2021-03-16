@@ -69,11 +69,13 @@ Optional.
 Once everything is set up, enter: `gmi init`  
 It creates the main directory structure and files for the capsule.
 
-**For convenience, you can disable password authentication for rsync on the server. To do so:**
+**For convenience when deploying the capsule, you might want to disable password authentication for rsync on the server. To do so:**
 
 On the server, enter: `sudo visudo`  
 And add this line: `user ALL= NOPASSWD:/usr/bin/rsync`  
 (Replace "user" by your username)
+
+**Also, make sure the EDITOR environment variable is set. Gmi needs it to launch your editor of choice.**
 
 Then, you're good to go.
 
