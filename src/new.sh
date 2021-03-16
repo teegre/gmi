@@ -26,9 +26,15 @@
 #
 # NEW
 # C: 2021/03/13
-# M: 2021/03/13
+# M: 2021/03/16
 
 source /usr/lib/gmi/core.sh
+
+insert_entry() {
+  # insert article link in main index.gmi file.
+
+  sed -i '/---/ i '"$1"'' "${src}index.gmi"
+}
 
 new() {
   # create a new article and
@@ -73,5 +79,5 @@ new() {
   entry="${src}${path}index.gmi"
   mv "$tmpfile" "$entry"
   __err M "saved entry: ${entry}."
-  echo "=> ${path}index.gmi $yy/$mm/$dd $title" >> "${src}index.gmi"
+  insert_entry "=> ${path}index.gmi $yy/$mm/$dd $title"
 }
