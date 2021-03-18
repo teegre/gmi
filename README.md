@@ -17,7 +17,7 @@ This is work in progress.
 
 ## Dependencies
 
-bash, coreutils, findutils, fzf, nano (optional), rsync, sed, ssh
+bash, coreutils, findutils, fzf, nano (optional), rsync, sed, ssh, tar
 
 ## Installation
 
@@ -137,6 +137,8 @@ Articles are stored in a YYYY/MM/DD/ID/ fashion.
 | archive-index | Open main archive index. |
 | archived | Display archived article list. |
 | auto-archive | Proceed archiving of older articles. |
+| backup | Create a backup copy of capsule. |
+| restore | Restore a backup copy. |
 
 When an article is selected, more options are shown:
 

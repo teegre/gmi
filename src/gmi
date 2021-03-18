@@ -24,7 +24,7 @@
 #
 # GMI
 # C : 2021/02/07
-# M : 2021/03/16
+# M : 2021/03/18
 # D : Main program.
 
 source /usr/lib/gmi/core.sh
@@ -37,6 +37,7 @@ source /usr/lib/gmi/deploy.sh
 source /usr/lib/gmi/archive.sh
 source /usr/lib/gmi/list.sh
 source /usr/lib/gmi/help.sh
+source /usr/lib/gmi/backup.sh
 
 echo '                 _'
 echo '  __ _ _ __ ___ (_)'
@@ -67,6 +68,8 @@ case $1 in
   deploy-micro ) deploy micro ;;
   archive-index) edit_index archive ;;
   auto-archive ) confirm && auto_archive ;;
+  backup       ) confirm && backup ;;
+  restore      ) restore ;;
   *            ) __err E "invalid option '$1'"
 esac
 

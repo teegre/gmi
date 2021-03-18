@@ -25,7 +25,7 @@
 #
 # EDIT
 # C: 2021/03/13
-# M: 2021/03/13
+# M: 2021/03/18
 # D: Utilities for editing.
 
 source /usr/lib/gmi/core.sh
@@ -49,6 +49,7 @@ edit() {
     return 0
   }
   __err E "$entry: no such file."
+  return 1
 }
 
 edit_index() {

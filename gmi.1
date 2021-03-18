@@ -1,4 +1,4 @@
-.TH GMI 1 0.6.2 Linux "User Manuals"
+.TH GMI 1 0.7 Linux "User Manuals"
 .SH NAME
 \fB\fCgmi\fR \- Gemini Capsule Generator\.
 .SH "SYNOPSIS"
@@ -49,37 +49,27 @@
 .
 .P
 \fBarchived\fR
-.
-.P
   Display archived article list\.
-.
 .br
   Selected article can be edited\.
-.
-.P
+
 \fBindex\fR
-.
-.P
   Open main index\.gmi file for editing\.
-.
-.P
+
 \fBmicro\fR
-.
-.P
   Open micro\.gmi file for editing\.
-.
-.P
+
 \fBarchive\-index\fR
-.
-.P
   Open archive main index\.gmi for editing\.
-.
-.P
+
 \fBauto\-archive\fR
-.
-.P
   Archive articles older than 1 year\.
-.
+
+\fBbackup\fR
+  Create a backup copy of capsule\.
+
+\fBrestore\fR
+  Restore a previous backup copy\.
 .SH "CONFIGURATION"
 \fBGmi\fR reads its configuration in \fB$HOME/\.config/gmi/\fR
 .
@@ -88,92 +78,49 @@ As as starting point, an empty configuration file can be found at \fB/etc/gmi/co
 .
 .SS "PARAMETERS"
 \fBsource_dir\fR
-.
-.P
   Capsule source directory\. Defaults to \fB~/\.gmi/src/\fR\.
-.
-.P
+
 \fBbackup_dir\fR
-.
-.P
   Backup directory\. Defaults to \fB~/\.gmi/bak/\fR\.
-.
-.P
+
 \fBdate_format_article\fR
-.
-.P
   Date format for articles\. Defaults to \fB%F\fR\.
-.
-.br
   (Formatting is the same as \fBdate\fR command\.)
-.
-.P
+
 \fBdate_format_micro\fR
-.
-.P
   Date format for microblog entries\. Defaults to \fB%F %T\fR\.
-.
-.br
   (Formatting is the same as \fBdate\fR command\.)
-.
-.P
+
 \fBarticle_section_delimiter\fR
-.
-.P
   Delimiter at the end of articles section\. Defaults to \fB\-\-\-\fR\.
-.
-.P
+
 \fByearly_archive_title\fR
-.
-.P
   Title of yearly archive index file\. Defaults to \fBYear %y Archive\fR\.
-.
-.br
   (\fB%y\fR expands to year)\.
-.
-.P
+
 \fBrss_title\fR
-.
-.P
+
 \fBrss_description\fR
-.
-.P
+
 \fBcapsule_url\fR
-.
-.P
+
 \fBserver_destination_dir\fR
-.
-.P
   Capsule destination directory on server (i\.e: \fBuser@domain:/path\fR)\.
-.
-.P
+
 \fBssh_identity_file\fR
-.
-.P
   Optional\.
-.
-.br
   Path to identity file to use with ssh\.
-.
-.P
+
 \fBssh_port\fR
-.
-.P
   Optional\.
-.
-.br
   Port to use to establish ssh connection\.
-.
+
 .SS "CONFIGURATION TIP"
 For convenience when deploying the capsule, you might want to disable password authentication for rsync on the server\.
-.
-.br
 To do so:
-.
-.P
+
 On the server, enter: \fBsudo visudo\fR
-.
-.br
+
 And add this line (replacing \fBuser\fR by your username): \fBuser ALL= NOPASSWD:/usr/bin/rsync\fR
 .
 .SH "AUTHOR"

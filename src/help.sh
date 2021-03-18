@@ -25,7 +25,7 @@
 #
 # HELP
 # C : 2021/03/15
-# M : 2021/03/15
+# M : 2021/03/18
 # D : Help screen.
 
 help() {
@@ -52,6 +52,8 @@ Options:
     deploy        - deploy capsule on server.
     deploy-micro  - deploy micro.gmi on server.
     auto-archive  - archive older articles.
+    backup        - create a backup copy of capsule.
+    restore       - restore a previous backup copy.
     help          - show this help and exit.
 EOB
 }

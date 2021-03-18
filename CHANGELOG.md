@@ -2,6 +2,7 @@
 
 * Written manual page.
 * Removed useless configuration parameters.
+* Added backup and restore functions.
 
 # 2021/03/16
 
