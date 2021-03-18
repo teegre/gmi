@@ -129,6 +129,8 @@ Articles are stored in a YYYY/MM/DD/ID/ fashion.
 | init    | Create initial capsule directory structure and files. |
 | new [title] | Create a new article. |
 | post [msg]  | Post a new microblog entry. |
+| deploy | Deploy capsule on server. |
+| deploy-micro | Deploy micro.gmi file only. |
 | articles | Display article list. |
 | index | Open main index for editing. |
 | micro | Open micro.gmi for editing. |
