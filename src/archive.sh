@@ -25,7 +25,7 @@
 #
 # ARCHIVE
 # C : 2021/03/13
-# M : 2021/03/13
+# M : 2021/03/18
 # D : Article archiving.
 
 source /usr/lib/gmi/core.sh
@@ -64,8 +64,8 @@ archive() {
 
     [[ -d "$path" ]] || mkdir -p "$path"
 
-    __err M "archive: copy ${entry/index.gmi} => ${path%$id/}"
-    cp -nr "${entry/index.gmi}" "${path%$id/}" &> /dev/null || {
+    __err M "archive: copy ${entry} => ${path%$id/}"
+    cp -nr "${dir:?}"/ "${path%$id/}" &> /dev/null || {
       __err E "archive: error while copying article."
       return 1
     }

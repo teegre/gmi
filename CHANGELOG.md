@@ -3,6 +3,8 @@
 * Written manual page.
 * Removed useless configuration parameters.
 * Added backup and restore functions.
+* Fixed a bug that occured when archiving article with subdirectories.
+
 
 # 2021/03/16
 

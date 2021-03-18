@@ -100,11 +100,11 @@ delete() {
     return 1
   }
   
-  index="${src}index.gmi"
-  rm "$dir"/* 2> /dev/null || {
-    __err E "$dir/*: no such file or directory."
+  rm -r "${dir:?}"/* || {
+    __err E "delete: something went wrong."
     return 1
   }
+  index="${src}index.gmi"
   __err M "$name deleted."
   sed -i "/^=> .*${title}.*$/d" "$index"
   __err M "$name removed from $index"
