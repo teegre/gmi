@@ -46,10 +46,8 @@ init() {
   [[ -d "$bak" ]] || mkdir -p "$bak"
 
   [[ -d "$src" ]] || {
-    local a_name a_delimiter
-    a_name="$(read_param "articles_section_name")" ||
-      a_name="Articles"
-    a_delimiter="$(read_param "articles_section_delimiter")" ||
+    local a_delimiter
+    a_delimiter="$(read_param "article_section_delimiter")" ||
       a_delimiter="---"
     __err M "init: creating directories..."
     [[  -d "${src}archive" ]] ||
@@ -61,7 +59,7 @@ init() {
         echo -e "=> feed/rss.xml RSS\n"
         echo -e "=> micro.gmi Microblog\n"
         echo -e "=> archive/index.gmi Archive\n"
-        echo -e "# $a_name\n"
+        echo -e "# Articles\n"
         echo -e "$a_delimiter\n"
       } >> "${src}index.gmi"
       __err M "init: index.gmi [ok]"

@@ -1,6 +1,7 @@
 # 2021/03/18
 
 * Written manual page.
+* Removed useless configuration parameters.
 
 # 2021/03/16
 

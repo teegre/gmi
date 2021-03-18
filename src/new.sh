@@ -34,7 +34,7 @@ insert_entry() {
   # insert article link in main index.gmi file.
 
   local delim 
-  delim="$(read_param "articles_section_delimiter")" ||
+  delim="$(read_param "article_section_delimiter")" ||
     delim="---"
 
   sed -i '/'"$delim"'/ i '"$1"'' "${src}index.gmi"
@@ -50,7 +50,7 @@ new() {
   tmpfile="$(mktemp)"
   title="${1:-"Untitled"}"
   
-  date_format="$(read_param "date_format_articles")" ||
+  date_format="$(read_param "date_format_article")" ||
     date_format="%F"
   
   entry_date="$(_date "$date_format")"
