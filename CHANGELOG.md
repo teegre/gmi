@@ -1,3 +1,7 @@
+# 2021/03/18
+
+* Written manual page.
+
 # 2021/03/16
 
 * config: added articles_section_name, articles_section_delimiter.
