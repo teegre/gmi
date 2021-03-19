@@ -62,9 +62,9 @@ case $1 in
   list   ) entry="$(article_list)" ;;
   idx    ) edit_index index ;;
   idxm   ) edit_index micro ;;
-  lista  ) list_archived ;;
+  lista  ) arch=1; entry="$(article_list 1)" ;;
   push   ) deploy ;;
-  help   ) help ;;
+  help   ) _help ;;
   pushm  ) deploy micro ;;
   idxa   ) edit_index archive ;;
   archive) confirm && auto_archive ;;
@@ -77,10 +77,11 @@ esac
   title="$(get_title "$entry")"
   __err M "${entry#$src*}"
   __err M "$title"
-  printf ":: [e]dit [r]ename [a]rchive [d]elete: "
+  [[ $arch ]] && printf ":: [e]dit [r]ename [d]elete: "
+  [[ $arch ]] || printf ":: [e]dit [r]ename [a]rchive [d]elete: "
   read -r r
   case $r in
-    a) confirm "archive?" && archive "$entry" ;;
+    a) [[ $arch ]] || confirm "archive?" && archive "$entry" ;;
     d) confirm "delete?" && delete "$entry" ;;
     e) edit "$entry" ;;
     r) retitle_usr "$entry" ;;

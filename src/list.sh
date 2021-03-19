@@ -25,45 +25,42 @@
 #
 # LIST
 # C: 2021/03/13
-# M: 2021/03/16
-# D: Display a list menu.
+# M: 2021/03/19
+# D: Display article list.
 
 source /usr/lib/gmi/core.sh
 
 article_list() {
-  local entry title article adate
+  # display (archived) article list.
+
+  [[ $src ]] || return 1
+
+  local arch files entry title article adate
+  arch="$1"
+
+  [[ $arch ]] &&
+    files="$(find "${src}archive/" -regex '^.+/[0-9]+/[0-9]+/[0-9]+/[0-9]+/index\.gmi$')"
+
+  [[ $arch ]] ||
+    files="$(find "$src" -not \( -path "${src}"archive -prune \) -regex '^.+/[0-9]+.+/index\.gmi$')"
+
   declare -A alist
-  while read -r entry; do
+
+  for entry in $files; do
     title="$(get_title "$entry")"
     [[ $entry =~ ^.+/([0-9]{4}/[0-9]{2}/[0-9]{2})/.+$ ]] &&
       adate="${BASH_REMATCH[1]}"
     alist["$adate $title"]="$entry"
-  done < <(find "$src" -not \( -path "${src}"archive -prune \) -regex '^.+/[0-9]+.+/index\.gmi$' | sort)
+  done
+
   article="$(
   (
     for entry in "${!alist[@]}"; do
       echo "$entry"
     done
-  ) | fzf +s --tac --header "gmi version $__version")"
+  ) | sort | fzf --tiebreak=begin --tac --header "gmi version $__version")"
+
   [[ $article ]] || { __err M "cancelled."; return 0; }
+
   echo "${alist["$article"]}"
-}
-
-list_archived() {
-  # list archived articles
-
-  [[ $src ]] || return 1
-
-  entry="$(
-  (
-      find "${src}archive/" -regex '^.+/[0-9]+.+/index\.gmi$' | sort
-      echo "quit"
-  ) | fzf +s --tac --header "gmi version $__version")"
-
-  [[ $entry == "quit" ]] && return
-
-  [[ $entry ]] && {
-    source /usr/lib/gmi/edit.sh
-    edit "$entry"
-  }
 }
