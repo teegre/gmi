@@ -25,10 +25,10 @@
 #
 # HELP
 # C : 2021/03/15
-# M : 2021/03/18
+# M : 2021/03/19
 # D : Help screen.
 
-help() {
+_help() {
 cat << 'EOB' >&2
 gmi: gemini capsule generator
 
@@ -40,20 +40,20 @@ Usage:
 Options:
     Invoked without argument, display a list of commands.
 
-    init          - create initial capsule directory structure
-                    and files.
-    new [title]   - create a new article.
-    post [msg]    - post a new microblog entry.
-    articles      - list articles.
-    archived      - list archived articles.
-    index         - open main index.gmi
-    micro         - open micro.gmi.
-    archive-index - open main archive index.
-    deploy        - deploy capsule on server.
-    deploy-micro  - deploy micro.gmi on server.
-    auto-archive  - archive older articles.
-    backup        - create a backup copy of capsule.
-    restore       - restore a previous backup copy.
-    help          - show this help and exit.
+    init        - create initial capsule directory structure
+                  and main files.
+    new [title] - create a new article.
+    post [msg]  - post a new microblog entry.
+    list        - list articles.
+    lista       - list archived articles.
+    idx         - open main index.gmi
+    idxm        - open micro.gmi.
+    idxa        - open main archive index.
+    push        - deploy capsule on server.
+    pushm       - deploy micro.gmi on server.
+    archive     - archive older articles.
+    backup      - create a backup copy of capsule.
+    restore     - restore a previous backup copy.
+    help        - show this help and exit.
 EOB
 }

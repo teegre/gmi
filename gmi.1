@@ -1,4 +1,4 @@
-.TH GMI 1 0.7 Linux "User Manuals"
+.TH GMI 1 0.7.1 Linux "User Manuals"
 .SH NAME
 \fB\fCgmi\fR \- Gemini Capsule Generator\.
 .SH "SYNOPSIS"
@@ -19,13 +19,13 @@
 .br
   Invoked without argument, open default editor (set in EDITOR environment variable)\. When done, deploy to server\.
 .PP
-\fBdeploy\fR
+\fBpush\fR
   Deploy capsule on server\.
 .PP
-\fBdeploy\-micro\fR
+\fBpushm\fR
   Copy micro\.gmi file on server\.
 .PP
-\fBarticles\fR
+\fBlist\fR
   Display list of already published articles (date title)\. When selected, other options are made available:
 .IP "" 4
 .nf
@@ -48,21 +48,21 @@
 .IP "" 0
 .
 .P
-\fBarchived\fR
+\fBlista\fR
   Display archived article list\.
 .br
   Selected article can be edited\.
 
-\fBindex\fR
+\fBidx\fR
   Open main index\.gmi file for editing\.
 
-\fBmicro\fR
+\fBidxm\fR
   Open micro\.gmi file for editing\.
 
-\fBarchive\-index\fR
+\fBidxa\fR
   Open archive main index\.gmi for editing\.
 
-\fBauto\-archive\fR
+\fBarchive\fR
   Archive articles older than 1 year\.
 
 \fBbackup\fR
