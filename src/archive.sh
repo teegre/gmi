@@ -25,7 +25,7 @@
 #
 # ARCHIVE
 # C : 2021/03/13
-# M : 2021/03/18
+# M : 2021/03/19
 # D : Article archiving.
 
 source /usr/lib/gmi/core.sh
@@ -75,10 +75,7 @@ archive() {
 
     [[ -d "${asrc}$yy" ]] || {
       [[ -a "$a_index" ]] || {
-        local atitle
-        atitle="$(read_param "archive_title")" || unset atitle
-        atitle="${atitle:-"Archive"}"
-        echo -e "# $atitle\n" > "$a_index"
+        echo -e "# Archive\n" > "$a_index"
       }
     }
     [[ $(sed -rn "/^=> .+\[$yy\]$/p" "$a_index") ]] ||
