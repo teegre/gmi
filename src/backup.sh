@@ -25,7 +25,7 @@
 #
 # BACKUP
 # C : 2021/03/18
-# M : 2021/03/18
+# M : 2021/03/19
 # D : Backup utility.
 
 source /usr/lib/gmi/core.sh
@@ -64,6 +64,7 @@ restore() {
     __err W "warning: it will overwrite current capsule."
     confirm "continue?" && {
       __err M "processing..."
+      rm -r "${src:?}"/*
       tar xzf "$name" -C "$src" && {
         __err M "success!"
         __err M "do you want to delete backup file ${name##*/}"
