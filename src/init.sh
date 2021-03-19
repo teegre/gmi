@@ -26,7 +26,7 @@
 #
 # INIT
 # C: 2021/03/13
-# M: 2021/03/16
+# M: 2021/03/19
 # D: Create initial capsule directory structure and files.
 
 source /usr/lib/gmi/core.sh
@@ -72,6 +72,7 @@ init() {
       echo -e "# Microblog\n" > "${src}micro.gmi"
       __err M "init: micro.gmi [ok]"
     }
+    touch "${src}favicon.txt"
     __err M "init: done."
     return 0
   }
