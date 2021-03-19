@@ -130,7 +130,7 @@ Articles are stored in a YYYY/MM/DD/ID/ fashion.
 | new [title] | Create a new article. |
 | post [msg]  | Post a new microblog entry. |
 | push | Deploy capsule on server. |
-| push | Deploy micro.gmi file only. |
+| pushm | Deploy micro.gmi file only. |
 | list | Display article list. |
 | idx | Open main index for editing. |
 | idxm | Open micro.gmi for editing. |
