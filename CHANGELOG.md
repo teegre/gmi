@@ -1,3 +1,11 @@
+# 2021/03/19
+
+* Shorter command names.
+* init.sh: added creation of favicon.txt file.
+* backup.sh: delete capsule before restoring.
+* archive.sh: removed use of archive_title configuration parameter.
+* list.sh: list function now can display articles or archived articles.
+
 # 2021/03/18
 
 * Written manual page.

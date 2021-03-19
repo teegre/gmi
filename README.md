@@ -129,18 +129,18 @@ Articles are stored in a YYYY/MM/DD/ID/ fashion.
 | init    | Create initial capsule directory structure and files. |
 | new [title] | Create a new article. |
 | post [msg]  | Post a new microblog entry. |
-| deploy | Deploy capsule on server. |
-| deploy-micro | Deploy micro.gmi file only. |
-| articles | Display article list. |
-| index | Open main index for editing. |
-| micro | Open micro.gmi for editing. |
-| archive-index | Open main archive index. |
-| archived | Display archived article list. |
-| auto-archive | Proceed archiving of older articles. |
+| push | Deploy capsule on server. |
+| push | Deploy micro.gmi file only. |
+| list | Display article list. |
+| idx | Open main index for editing. |
+| idxm | Open micro.gmi for editing. |
+| idxa | Open main archive index. |
+| lista | Display archived article list. |
+| archive | Proceed archiving of older articles. |
 | backup | Create a backup copy of capsule. |
 | restore | Restore a backup copy. |
 
-When an article is selected, more options are shown:
+When an article is selected, more options are available:
 
 | Option | Description |
 |:-------|:------------|
