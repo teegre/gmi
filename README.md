@@ -43,17 +43,14 @@ Backup directory.
 `date_format_micro = %F %T`  
 Articles and microblog date format (see `man date` for more on this).
 
-`articles_section_name = Articles`  
-`articles_section_delimiter = ---`  
-
-`archive_title = Archive`  
-Title of main archive index file.
+`article_section_delimiter = ---`  
 
 `yearly_archive_title = Year %y Archive`  
 Title of yearly archive index file (%y expands to year).
 
 `rss_title =`  
 `rss_description =`
+`capsule_url =`
 
 `server_destination_dir =`  
 For instance `user@domain:/path`.
@@ -64,12 +61,10 @@ Optional.
 `ssh_port =`  
 Optional.
 
-`capsule_url =`
-
 Once everything is set up, enter: `gmi init`  
 It creates the main directory structure and files for the capsule.
 
-**For convenience when deploying the capsule, you might want to disable password authentication for rsync on the server. To do so:**
+**For convenience when deploying the capsule, you might want to disable password for rsync on the server. To do so:**
 
 On the server, enter: `sudo visudo`  
 And add this line: `user ALL= NOPASSWD:/usr/bin/rsync`  
@@ -81,24 +76,26 @@ Then, you're good to go.
 
 ## Basic usage
 
-**To customize your main page, enter:** `gmi index`
+**To customize your main page, enter:** `gmi idx`
 
 **To create an article, enter:** `gmi new "My New Article"`  
 When finished, a link to the article is added to the main index.gmi.
 
-**To deploy the capsule on the server:** `gmi deploy`  
+**To deploy the capsule on the server:** `gmi push`  
 RSS feed is generated each time you use this command.
 
 **To add a microblog entry, enter:** `gmi post "Hello, World!"`  
 Changes are automatically deployed to the server.
 
-**To view list of already created articles:** `gmi articles`  
+**To view list of already created articles:** `gmi list`  
 Selected article then can be:
 
 * Edited
 * Renamed
 * Archived
 * Deleted
+
+For more info: `gmi help` or `man gmi`.
 
 ## Directory structure and files
 
