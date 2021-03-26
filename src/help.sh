@@ -25,7 +25,7 @@
 #
 # HELP
 # C : 2021/03/15
-# M : 2021/03/19
+# M : 2021/03/26
 # D : Help screen.
 
 _help() {
@@ -38,10 +38,7 @@ Usage:
     gmi <option> <value>
 
 Options:
-    Invoked without argument, display a list of commands.
-
-    init        - create initial capsule directory structure
-                  and main files.
+    init        - create initial capsule file structure.
     new [title] - create a new article.
     post [msg]  - post a new microblog entry.
     list        - list articles.
