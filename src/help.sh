@@ -33,7 +33,6 @@ cat << 'EOB' >&2
 gmi: gemini capsule generator
 
 Usage:
-    gmi
     gmi <option>
     gmi <option> <value>
 
