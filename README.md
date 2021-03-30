@@ -54,7 +54,7 @@ Defaults to 6.
 Title of yearly archive index file (%y expands to year).
 
 `rss_title =`  
-`rss_description =`
+`rss_description =`  
 `capsule_url =`
 
 `server_destination_dir =`  
