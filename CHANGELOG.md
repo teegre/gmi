@@ -1,3 +1,9 @@
+# 2021/03/30
+
+* core.sh: get_date: print creation date in seconds since the epoch of given article.
+* config: added article_lifespan parameter for archiving (in months, defaults to 6).
+* archive.sh: auto_archive: use of article_lifespan param to determine whether an article must be archived or not.
+
 # 2021/03/19
 
 * Shorter command names.

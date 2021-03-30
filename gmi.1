@@ -1,4 +1,4 @@
-.TH GMI 1 0.7.1 Linux "User Manuals"
+.TH GMI 1 0.7.2 Linux "User Manuals"
 .SH NAME
 \fB\fCgmi\fR \- Gemini Capsule Generator\.
 .SH "SYNOPSIS"
@@ -63,7 +63,8 @@
   Open archive main index\.gmi for editing\.
 
 \fBarchive\fR
-  Archive articles older than 1 year\.
+  Archive older articles\.
+  (See: \fIarticle_lifespan\fR parameter in \fBCONFIGURATION\fR section below.)
 
 \fBbackup\fR
   Create a backup copy of capsule\.
@@ -94,6 +95,10 @@ As as starting point, an empty configuration file can be found at \fB/etc/gmi/co
 \fBarticle_section_delimiter\fR
   Delimiter at the end of articles section\. Defaults to \fB\-\-\-\fR\.
 
+\fBarticle_lifespan\fR
+  In months\. Articles whose creation date is older or equal to this value are taken into accout for archiving.
+  Defaults to \fB6\fR\.
+
 \fByearly_archive_title\fR
   Title of yearly archive index file\. Defaults to \fBYear %y Archive\fR\.
   (\fB%y\fR expands to year)\.
@@ -116,7 +121,7 @@ As as starting point, an empty configuration file can be found at \fB/etc/gmi/co
   Port to use to establish ssh connection\.
 
 .SS "CONFIGURATION TIP"
-For convenience when deploying the capsule, you might want to disable password authentication for rsync on the server\.
+For convenience when deploying the capsule, you might want to disable password for rsync on the server\.
 To do so:
 
 On the server, enter: \fBsudo visudo\fR
