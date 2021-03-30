@@ -25,7 +25,7 @@
 #
 # ARCHIVE
 # C : 2021/03/13
-# M : 2021/03/19
+# M : 2021/03/30
 # D : Article archiving.
 
 source /usr/lib/gmi/core.sh
@@ -64,7 +64,6 @@ archive() {
 
     [[ -d "$path" ]] || mkdir -p "$path"
 
-    __err M "archive: copy ${entry} => ${path%$id/}"
     cp -nr "${dir:?}"/ "${path%$id/}" &> /dev/null || {
       __err E "archive: error while copying article."
       return 1
@@ -104,12 +103,44 @@ auto_archive() {
 
   [[ $src ]] || return 1
 
-  local y f path
-  y="$(_date "%Y")"
+  local d now dur ddif f path
+  now="$(_date "%s")"
+
+  dur="$(read_param article_lifespan)" || {
+    __err W "config: article_lifespan parameter is not set."
+    __err W "config: using default value."
+    dur=6
+  }
+
+  [[ $dur =~ ^[0-9]+$ ]] || {
+    __err W "config: invalid article_lifespan parameter value."
+    __err W "config: using default."
+    dur=6
+  }
+
+  ((dur<=0)) && {
+    __err W "config: invalid article_lifespan parameter value."
+    __err W "config: using default."
+    dur=6
+  }
+
+
   while read -r f; do
-    [[ $f =~ ^${src}([0-9]{4}).+$ ]] && {
-      [[ ${BASH_REMATCH[1]} -eq "$y" ]] && continue
-      archive "$f"
+    # file creation date in seconds since the epoch.
+    d="$(get_date "$f")" || {
+      __err E "archive: could not get article creation date."
+      __err M "archive: skipped $f."
+      continue
     }
-  done < <(find "$src" -regex "${src}[0-9]+/[0-9]+/[0-9]+/[0-9]+\.gmi" | sort)
+
+    ((dur*=30))           # duration in days.
+    ((ddif=now-d))        # difference between actual date and article creation date...
+    ((ddif=ddif/3600/24)) # ... in days.
+
+    if ((ddif>=dur)); then
+      archive "$f"
+    else
+      __err M "archive: skipped $f."
+    fi
+  done < <(find "$src" -regex "${src}[0-9]+/[0-9]+/[0-9]+/[0-9]+/index.gmi$" | sort)
 }
