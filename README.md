@@ -11,17 +11,17 @@
 
 **gmi** is a Gemini capsule generator to easily manage articles, microblog posts and rss feed from the terminal.
 
-This is work in progress.
-
 **gmi** has been tested on a **self-hosted server only**.
 
 ## Dependencies
 
-bash, coreutils, findutils, fzf, nano (optional), rsync, sed, ssh, tar
+bash, coreutils, findutils, fzf, nano (optional), openssh, rsync, sed, tar
 
 ## Installation
 
-Clone this repository and:
+**gmi** is available in the Arch User Repository: [https://aur.archlinux.org/gmi.git](https://aur.archlinux.org/gmi.git)
+
+Or, clone this repository and:
 
 `make install`
 
