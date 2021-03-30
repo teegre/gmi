@@ -23,8 +23,9 @@ article_section_delimiter = ---
 # yearly archive title
 yearly_archive_title = %y Archive
 
-# archiving frequency in months.
-archive_frequency=6
+# articles whose creation date is older or equal to this value (in months)
+# are taken into account for archiving.
+article_lifespan = 6
 
 rss_title = 
 rss_description = 
