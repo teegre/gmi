@@ -25,16 +25,21 @@
 #
 # CORE
 # C : 2021/03/13
-# M : 2021/03/19
+# M : 2021/03/30
 # D : Utility functions
 
 # shellcheck disable=SC2034
-__version="0.7.1"
+__version="0.7.2"
 
 CONFIG="$HOME/.config/gmi/config"
 
 _date() {
   # builtin date function.
+  # print the current time in the given format.
+  #
+  # usage:
+  # _date <format>
+
   printf "%($1)T\\n" "-1"
 }
 
@@ -100,6 +105,25 @@ get_title() {
   [[ -s "$entry" ]] &&  {
     # shellcheck disable=SC2016
     sed -r 's_^# (.+)$_\1_;1q' "$entry"
+    return 0
+  }
+  return 1
+}
+
+get_date() {
+  # return creation date (in seconds since the epoch)
+  # of a given article.
+
+  [[ $1 ]] || return 1
+
+  local regex f d
+  regex="^${src}([0-9]{4}/[0-9]{2}/[0-9]{2})/.+$"
+
+  f="$1"
+
+  [[ $f =~ $regex ]] && {
+    d="${BASH_REMATCH[1]}"
+    date -d "$d" "+%s"
     return 0
   }
   return 1
