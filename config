@@ -23,6 +23,9 @@ article_section_delimiter = ---
 # yearly archive title
 yearly_archive_title = %y Archive
 
+# archiving frequency in months.
+archive_frequency=6
+
 rss_title = 
 rss_description = 
 capsule_url = 
