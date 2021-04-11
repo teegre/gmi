@@ -26,8 +26,8 @@
 #
 # DEPLOY
 # C: 2021/03/13
-# M: 2021/03/16
-# D: For deploying a capsule on the server.
+# M: 2021/04/11
+# D: For deploying capsule on the server.
 
 source /usr/lib/gmi/core.sh
 source /usr/lib/gmi/rss.sh
@@ -73,4 +73,5 @@ deploy() {
     }
     __err M "micro: posted."
   }
+  return 0
 }

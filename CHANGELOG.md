@@ -1,3 +1,7 @@
+# 2021/04/11
+
+* gmi, deploy.sh: fixed wrong exit values.
+
 # 2021/03/30
 
 * core.sh: get_date: print creation date in seconds since the epoch of given article.

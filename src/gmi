@@ -24,7 +24,7 @@
 #
 # GMI
 # C : 2021/02/07
-# M : 2021/03/19
+# M : 2021/04/11
 # D : Main program.
 
 source /usr/lib/gmi/core.sh
@@ -56,21 +56,21 @@ echo -e "It is distributed AS IS with NO WARRANTY.\n"
 }
 
 case $1 in
-  init   ) init ;;
-  new    ) shift; new "$*" ;;
-  post   ) shift; post "$*" ;;
+  init   ) init; exit $? ;;
+  new    ) shift; new "$*"; exit $? ;;
+  post   ) shift; post "$*"; exit $? ;;
   list   ) entry="$(article_list)" ;;
-  idx    ) edit_index index ;;
-  idxm   ) edit_index micro ;;
+  idx    ) edit_index index; exit $? ;;
+  idxm   ) edit_index micro; exit $? ;;
   lista  ) arch=1; entry="$(article_list 1)" ;;
-  push   ) deploy ;;
-  help   ) _help ;;
-  pushm  ) deploy micro ;;
-  idxa   ) edit_index archive ;;
-  archive) confirm && auto_archive ;;
-  backup ) confirm && backup ;;
-  restore) restore ;;
-  *      ) __err E "invalid option '$1'"
+  push   ) deploy; exit $? ;;
+  help   ) _help; exit $? ;;
+  pushm  ) deploy micro; exit $? ;;
+  idxa   ) edit_index archive; exit $? ;;
+  archive) confirm && auto_archive; exit $? ;;
+  backup ) confirm && backup; exit $? ;;
+  restore) restore; exit $? ;;
+  *      ) __err E "invalid option '$1'"; exit 1
 esac
 
 [[ -a $entry ]] && {
@@ -87,4 +87,7 @@ esac
     r) retitle_usr "$entry" ;;
     *) __err M "cancelled." ;;
   esac
+  exit $?
 }
+
+exit 0
