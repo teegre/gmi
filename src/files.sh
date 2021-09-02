@@ -26,7 +26,7 @@
 #
 # FILES
 # C: 2021/03/13
-# M: 2021/03/13
+# M: 2021/09/02
 # D: File utilities.
 
 source /usr/lib/gmi/core.sh
@@ -104,7 +104,14 @@ delete() {
     __err E "delete: something went wrong."
     return 1
   }
-  index="${src}index.gmi"
+
+  # check if archived!
+  if [[ $name =~ ^archive/([0-9]{4})/.*$ ]]; then
+    index="${src}archive/${BASH_REMATCH[1]}/index.gmi"
+  else
+    index="${src}index.gmi"
+  fi
+
   __err M "$name deleted."
   sed -i "/^=> .*${title}.*$/d" "$index"
   __err M "$name removed from $index"

@@ -25,7 +25,7 @@
 #
 # ARCHIVE
 # C : 2021/03/13
-# M : 2021/03/30
+# M : 2021/09/02
 # D : Article archiving.
 
 source /usr/lib/gmi/core.sh
@@ -43,8 +43,7 @@ archive() {
   entry="$1"
   title="$(get_title "$entry")"
   dir="${entry%/*}"
-  asrc="$src"
-  asrc+="archive/"
+  asrc="${src}archive/"
   a_index="${asrc}index.gmi" # archive main index.gmi
 
   regex="^([0-9]{4})/([0-9]{2})/([0-9]{2})/([0-9]+)/index\.gmi$"

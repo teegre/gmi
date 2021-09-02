@@ -25,11 +25,11 @@
 #
 # CORE
 # C : 2021/03/13
-# M : 2021/04/11
+# M : 2021/09/02
 # D : Utility functions
 
 # shellcheck disable=SC2034
-__version="0.7.3"
+__version="0.7.4"
 
 CONFIG="$HOME/.config/gmi/config"
 
