@@ -47,7 +47,7 @@ Articles and microblog date format (see `man date` for more on this).
 
 `article_lifespan = 6`  
 In months.  
-Articles whose creation date is older or equal to this value are taken into account for archiving.  
+Articles with a creation date older or equal to this value are taken into account for archiving.  
 Defaults to 6.
 
 `yearly_archive_title = Year %y Archive`  
