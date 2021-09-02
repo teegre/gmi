@@ -1,3 +1,7 @@
+# 2021/09/02
+
+* files.sh: delete: modified such as it now removes entries from the right index.gmi file.
+
 # 2021/04/11
 
 * gmi, deploy.sh: fixed wrong exit values.
