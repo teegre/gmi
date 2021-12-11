@@ -26,7 +26,7 @@
 #
 # FILES
 # C: 2021/03/13
-# M: 2021/09/02
+# M: 2021/12/11
 # D: File utilities.
 
 source /usr/lib/gmi/core.sh
@@ -113,6 +113,12 @@ delete() {
   fi
 
   __err M "$name deleted."
+
+  # escape special characters
+  title="${title//\[/\\\[}"
+  title="${title//\]/\\\]}"
+  title="${title//\//\\\/}"
+
   sed -i "/^=> .*${title}.*$/d" "$index"
   __err M "$name removed from $index"
   delete_empty_dir "$dir"

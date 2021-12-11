@@ -1,3 +1,7 @@
+# 2021/12/11
+
+* files.sh: delete: escape special characters before removing an entry in an index.gmi file.
+
 # 2021/09/02
 
 * files.sh: delete: modified such as it now removes entries from the right index.gmi file.

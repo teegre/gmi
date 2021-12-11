@@ -24,7 +24,7 @@
 #
 # GMI
 # C : 2021/02/07
-# M : 2021/04/11
+# M : 2021/12/11
 # D : Main program.
 
 source /usr/lib/gmi/core.sh
@@ -39,16 +39,18 @@ source /usr/lib/gmi/list.sh
 source /usr/lib/gmi/help.sh
 source /usr/lib/gmi/backup.sh
 
-echo '                 _'
-echo '  __ _ _ __ ___ (_)'
-echo " / _\` | '_ \` _ \| | gemini"
-echo '| (_| | | | | | | | capsule'
-echo ' \__, |_| |_| |_|_| generator'
-echo ' |___/'
-echo
-echo "gmi -- version $__version"
-echo "This program is free software."
-echo -e "It is distributed AS IS with NO WARRANTY.\n"
+[[ $@ ]] || {
+  echo '                 _'
+  echo '  __ _ _ __ ___ (_)'
+  echo " / _\` | '_ \` _ \| | gemini"
+  echo '| (_| | | | | | | | capsule'
+  echo ' \__, |_| |_| |_|_| generator'
+  echo ' |___/'
+  echo
+  echo "gmi -- version $__version"
+  echo "This program is free software."
+  echo -e "It is distributed AS IS with NO WARRANTY.\n"
+}
 
 [[ $1 ]] || {
   __err M "type 'gmi help' for more info."
