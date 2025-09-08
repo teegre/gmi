@@ -28,8 +28,8 @@
 # M : 2021/03/13
 # D : Microblogging utility.
 
-source /usr/local/lib/gmi/core.sh
-source /usr/local/lib/gmi/deploy.sh
+source /usr/lib/gmi/core.sh
+source /usr/lib/gmi/deploy.sh
 
 post() {
   # add a microblog entry.

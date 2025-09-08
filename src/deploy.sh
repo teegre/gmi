@@ -29,8 +29,8 @@
 # M: 2021/04/11
 # D: For deploying capsule on the server.
 
-source /usr/local/lib/gmi/core.sh
-source /usr/local/lib/gmi/rss.sh
+source /usr/lib/gmi/core.sh
+source /usr/lib/gmi/rss.sh
 
 deploy() {
   # deploy capsule on server.

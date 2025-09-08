@@ -28,7 +28,7 @@
 # C: 2021/03/13
 # M: 2021/03/16
 
-source /usr/local/lib/gmi/core.sh
+source /usr/lib/gmi/core.sh
 
 insert_entry() {
   # insert article link in main index.gmi file.

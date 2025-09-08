@@ -28,7 +28,7 @@
 # M : 2021/03/13
 # D : Generate RSS feed.
 
-source /usr/local/lib/gmi/core.sh
+source /usr/lib/gmi/core.sh
 
 rss() {
   # generate rss feed.

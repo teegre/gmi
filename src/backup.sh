@@ -28,7 +28,7 @@
 # M : 2021/03/19
 # D : Backup utility.
 
-source /usr/local/lib/gmi/core.sh
+source /usr/lib/gmi/core.sh
 
 backup() {
   local name

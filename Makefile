@@ -1,5 +1,5 @@
 PROGNAME  ?= gmi
-PREFIX    ?= /usr/local
+PREFIX    ?= /usr
 BINDIR    ?= $(PREFIX)/bin
 LIBDIR    ?= $(PREFIX)/lib
 SHAREDIR  ?= $(PREFIX)/share

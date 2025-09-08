@@ -28,7 +28,7 @@
 # M: 2021/03/19
 # D: Display article list.
 
-source /usr/local/lib/gmi/core.sh
+source /usr/lib/gmi/core.sh
 
 article_list() {
   # display (archived) article list.
