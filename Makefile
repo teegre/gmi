@@ -10,7 +10,7 @@ MANPAGE    = $(PROGNAME).1
 
 .PHONY: install
 install: src/$(PROGNAME).out
-	install -d  $(BINDIR)
+	install -d  $(DESTDIR)$(BINDIR)
 	install -m755  src/$(PROGNAME).out $(DESTDIR)$(BINDIR)/$(PROGNAME)
 	install -Dm644 src/*.sh   -t $(DESTDIR)$(LIBDIR)/$(PROGNAME)
 	install -Dm644 config     -t $(DESTDIR)$(CONFIGDIR)/$(PROGNAME)
