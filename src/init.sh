@@ -29,7 +29,7 @@
 # M: 2021/03/19
 # D: Create initial capsule directory structure and files.
 
-source /usr/lib/gmi/core.sh
+source ${HOME}/.local/lib/gmi/core.sh
 
 init() {
   [[ -a "$CONFIG" ]] || {

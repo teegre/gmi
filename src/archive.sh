@@ -28,8 +28,8 @@
 # M : 2021/09/02
 # D : Article archiving.
 
-source /usr/lib/gmi/core.sh
-source /usr/lib/gmi/files.sh
+source ${HOME}/.local/lib/gmi/core.sh
+source ${HOME}/.local/lib/gmi/files.sh
 
 archive() {
   # archive an article

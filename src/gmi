@@ -27,17 +27,17 @@
 # M : 2021/12/11
 # D : Main program.
 
-source /usr/lib/gmi/core.sh
-source /usr/lib/gmi/init.sh
-source /usr/lib/gmi/new.sh
-source /usr/lib/gmi/edit.sh
-source /usr/lib/gmi/micro.sh
-source /usr/lib/gmi/files.sh
-source /usr/lib/gmi/deploy.sh
-source /usr/lib/gmi/archive.sh
-source /usr/lib/gmi/list.sh
-source /usr/lib/gmi/help.sh
-source /usr/lib/gmi/backup.sh
+source ${HOME}/.local/lib/gmi/core.sh
+source ${HOME}/.local/lib/gmi/init.sh
+source ${HOME}/.local/lib/gmi/new.sh
+source ${HOME}/.local/lib/gmi/edit.sh
+source ${HOME}/.local/lib/gmi/micro.sh
+source ${HOME}/.local/lib/gmi/files.sh
+source ${HOME}/.local/lib/gmi/deploy.sh
+source ${HOME}/.local/lib/gmi/archive.sh
+source ${HOME}/.local/lib/gmi/list.sh
+source ${HOME}/.local/lib/gmi/help.sh
+source ${HOME}/.local/lib/gmi/backup.sh
 
 [[ $@ ]] || {
   echo '                 _'

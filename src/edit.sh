@@ -28,8 +28,8 @@
 # M: 2021/03/18
 # D: Utilities for editing.
 
-source /usr/lib/gmi/core.sh
-source /usr/lib/gmi/files.sh
+source ${HOME}/.local/lib/gmi/core.sh
+source ${HOME}/.local/lib/gmi/files.sh
 
 edit() {
   # open an article for editing.
