@@ -29,7 +29,7 @@
 # M: 2021/12/11
 # D: File utilities.
 
-source ${HOME}/.local/lib/gmi/core.sh
+source /usr/local/lib/gmi/core.sh
 
 retitle() {
   # rename an article.
